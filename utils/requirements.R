@@ -1,0 +1,8 @@
+install.packages("SpatialExtremes")
+install.packages("parallel")
+install.packages("lattice")
+install.packages("gridExtra")
+install.packages("usedist")
+install.packages("combinat")
+install.packages("interp")
+install.packages("easyNCDF")

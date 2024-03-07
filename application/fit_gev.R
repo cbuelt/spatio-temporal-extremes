@@ -59,9 +59,7 @@ round(gev_fit$std.err,4)
 no_cores <- detectCores() - 2
 
 simulate <- function(params, grid){
-  range <- params[["range"]]
-  smooth <- params[["smooth"]]
-  data <- rmaxstab(1, coord = grid, cov.mod = "powexp", nugget = 0, range = range, smooth = smooth)
+  data <- rmaxstab(1, coord = grid, cov.mod = "powexp", nugget = 0, range = params[1], smooth = params[2])
   return(data)
 }
 
@@ -73,9 +71,8 @@ n_samples <- 10
 for (month in c("June", "July", "August")){
   params <- ncvar_get(parameter_estimates, month)
   params <- array(rep(params, each = n_samples), dim = c(n_samples, 2))
-  colnames(params) <- c("range", "smooth")
   cl <- makeCluster(no_cores)
-  clusterExport(cl,c('simulate'))
+  clusterExport(cl,c('simulate', 'grid'))
   clusterEvalQ(cl, library(SpatialExtremes))
   simulated_field <- parApply(cl, params, grid, MARGIN = 1, FUN = simulate)
   stopCluster(cl)
@@ -83,5 +80,4 @@ for (month in c("June", "July", "August")){
   #Save data
   save(simulated_field, file = paste0("../data/application/data/simulations_", month, "2022.RData"))
 }
-
 

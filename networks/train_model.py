@@ -208,12 +208,12 @@ def predict_test_data(
 
 if __name__ == "__main__":
     # Set model
-    models = ["brown", "powexp", "whitmat"]
-    dir = "application"
-    types = ["energy_theta"]
+    models = ["brown", "powexp"]#["brown", "powexp", "whitmat"]
+    dir = "all_models_small"
+    types = ["normal", "energy"]
     epochs = 100
     batch_size = 100
-    load_ext_coef = False
+    load_ext_coef = True
 
     # Calculate support points
     h_support = generate_support_points()
@@ -237,7 +237,7 @@ if __name__ == "__main__":
                 dir,
                 model,
                 device,
-                test_size=9,
+                test_size=500,
                 type=type,
                 points=points,
                 load_ext_coef=load_ext_coef,

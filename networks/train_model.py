@@ -208,12 +208,13 @@ def predict_test_data(
 
 if __name__ == "__main__":
     # Set model
-    models = ["brown", "powexp"]#["brown", "powexp", "whitmat"]
-    dir = "all_models_small"
-    types = ["normal", "energy"]
-    epochs = 100
-    batch_size = 100
-    load_ext_coef = True
+    models = ["brown", "powexp"] # Define model to train 
+    dir = "normal" # Define which directory/data to use
+    types = ["normal", "energy", "energy_theta"] # Define types of neural networks to train and evaluate
+    epochs = 100 # Number of epochs
+    batch_size = 100 # Batch size
+    load_ext_coef = False # Whether to load extremal coefficient function or calculate it during training
+    train = True # Whether to train the model or evaluate only
 
     # Calculate support points
     h_support = generate_support_points()
@@ -223,16 +224,19 @@ if __name__ == "__main__":
 
     for model in models:
         for type in types:
-            trained_net = train_model(
-                dir,
-                model,
-                epochs,
-                batch_size,
-                device,
-                type=type,
-                points=points,
-                load_ext_coef=load_ext_coef,
-            )
+            # Train
+            if train:
+                trained_net = train_model(
+                    dir,
+                    model,
+                    epochs,
+                    batch_size,
+                    device,
+                    type=type,
+                    points=points,
+                    load_ext_coef=load_ext_coef,
+                )
+            # Predict
             predict_test_data(
                 dir,
                 model,

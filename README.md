@@ -70,9 +70,11 @@ The figure shows the proposed model architecture. The spatial field is fed throu
 
 ## Exemplary simulation results
 The figure visualizes the different estimation methods for the max-stable models using a selected test sample $(\lambda, \nu) = (1.51, 1.37)$ for the Brown-Resnick model. In each figure the upper left panel shows the different location estimates, while the upper right panel shows the estimated extremal coefficient functions. The lower left panel shows the sample-based distribution estimates of the $\mathrm{ABC}$ and $\mathrm{EN}_{\lambda,\nu}$ method and the lower right panel shows the estimated pointwise confidence intervals ($\alpha = 0.05$) for the extremal coefficient function.
+
 ![](imgs/brown_results.png)
 
 The figure visualizes the different estimation methods for the Whittle-Matérn kernel (robustness scenario #2) using a selected test sample $(\lambda, \nu) = (4.00, 0.81)$. The plot division is the same as above.
+
 ![](imgs/whitmat_results.png)
 
 ## Analysis of precipitation extremes
@@ -81,6 +83,7 @@ Some results on the analysis of summer precipitation maxima across Western Germa
 
 ### Visualization of precipiation fields
 The figure shows the observed precipitation maxima in 2022 (top) and corresponding simulations from an estimated Schlather model with powered exponential correlation function (bottom ). The simulations have been transformed back to the original GEV surface.
+
 ![](imgs/2022_tp.png)
 
 ![](imgs/2022_tp_estimates.png)
@@ -88,6 +91,7 @@ The figure shows the observed precipitation maxima in 2022 (top) and correspondi
 ### Estimation of spatial dependence
 
 The figure shows the different estimates for the extremal coefficient function. The black dots are the binned F-madogram estimates and the lines correspond to the pointwise mean of the estimated extremal coefficient functions. The left panels shows F-madogram estimate with data from 2021-2023 and the right panel with data from 2011-2023.
+
 ![](imgs/madogram_estimate_powexp.png)
 
 # License

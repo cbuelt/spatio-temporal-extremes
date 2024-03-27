@@ -44,7 +44,7 @@ For the analysis of precipitation extremes across Germany, the data needs to be 
 
 # Reproducing results
 
-The results for all experiments can be found in the corresponding folders. Invoking the script `reproduce_results.sh` will perform inference for the neural network approaches based on the training checkpoints. The metrics can be recalculated by running `evaluation/calculate_results.py`. Visualizations of figures and tables is done in interactive and easy-to-use Jupyter notebooks.
+The results for all experiments can be found in the corresponding folders. Invoking the script `reproduce_results.sh` will perform inference for the neural network approaches based on the training checkpoints. The metrics can be recalculated by running `evaluation/calculate_results.py`. Visualizations of figures and tables is done in interactive and easy-to-use Jupyter notebooks. The same goes for the precipitation application, which requires the data download for the years 1931-2023.
 
 For running completely new simulations, you can follow these steps:
 - Create a new experiment folder.
@@ -52,6 +52,46 @@ For running completely new simulations, you can follow these steps:
 - Adjust the `networks/config.py` file to your scenario.
 - Run `networks/train_model.py` in order to create predictions.
 - For evaluation adjust and run `evaluation/calculate_results.py` for calculating the same metrics as in our study.
+
+# Methodology
+Our main contributions are:
+- Development of an estimation approach based on generative neural networks that allows for uncertainty quantification of parameters or model functionals
+- Application to max-stable processes in order to analyze spatial extremes
+- Extensive evaluation of the approach with regards to several novel metrics
+- Application to extreme precipitation events across Western Germany
+
+In the following are some of the important visualizations, for further details see the referenced publication.
+
+
+## Proposed neural network architecture
+The figure shows the proposed model architecture. The spatial field is fed through three blocks convolutional and max-pooling layers. Across the blocks, the output size decreases, while the channel size increases. In the second and third block, residual connections are added, marked by the arrows on top. After the convolutional layers the network is flattened and fed through some final linear layers, where Gaussian noise is multiplied on top to finally create $m$ output samples. For parameter prediction, samples of $\lambda, \nu$ are created, while for the direct estimation of the extremal coefficient function, sample points of the function are predicted as $\theta^i_j := \hat{\theta}_j(h_i)$.
+![](imgs/network_architecture.png)
+
+## Exemplary simulation results
+The figure visualizes the different estimation methods for the max-stable models using a selected test sample $(\lambda, \nu) = (1.51, 1.37)$ for the Brown-Resnick model. In each figure the upper left panel shows the different location estimates, while the upper right panel shows the estimated extremal coefficient functions. The lower left panel shows the sample-based distribution estimates of the $\mathrm{ABC}$ and $\mathrm{EN}_{\lambda,\nu}$ method and the lower right panel shows the estimated pointwise confidence intervals ($\alpha = 0.05$) for the extremal coefficient function.
+![](imgs/brown_results.png)
+
+The figure visualizes the different estimation methods for the Whittle-Matérn kernel (robustness scenario #2) using a selected test sample $(\lambda, \nu) = (4.00, 0.81)$. The plot division is the same as above.
+![](imgs/whitmat_results.png)
+
+## Analysis of precipitation extremes
+
+Some results on the analysis of summer precipitation maxima across Western Germany.
+
+### Visualization of precipiation fields
+The figure shows the observed precipitation maxima in 2022 (top) and corresponding simulations from an estimated Schlather model with powered exponential correlation function (bottom ). The simulations have been transformed back to the original GEV surface.
+![](imgs/2022_tp.png)
+
+![](imgs/2022_tp_estimates.png)
+
+### Estimation of spatial dependence
+
+The figure shows the different estimates for the extremal coefficient function. The black dots are the binned F-madogram estimates and the lines correspond to the pointwise mean of the estimated extremal coefficient functions. The left panels shows F-madogram estimate with data from 2021-2023 and the right panel with data from 2011-2023.
+![](imgs/madogram_estimate_powexp.png)
+
+# License
+This work is published under the MIT license.
+
 
 
 

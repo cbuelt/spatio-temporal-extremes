@@ -17,6 +17,7 @@ Recent methods in modeling spatial extreme events have focused on utilizing para
 | `application` | Contains code regarding the empirical part of the thesis. |
 | `data` | Contains the data used in the thesis and required to reproduce the results. |
 | `evaluation` | Contains code for evaluating the different models. |
+| `imgs` | Contains the images used in the repository description. |
 | `mle` | Contains code related to the Pairwise Likelihood approach. |
 | `networks` | Contains the implementation of the neural networks. |
 | `plots` | Contains code for the plots used in the thesis. |

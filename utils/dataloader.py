@@ -11,14 +11,6 @@ import random
 import torch
 from evaluation.metrics import extremal_coefficient
 
-""" import os
-import sys
-sys.path.append(os.getcwd())
-from utils import transform_parameters, generate_support_points
-from evaluation.metrics import extremal_coefficient """
-
-
-
 
 def get_train_val_loader(
     data_path: str, model: str, type: str, batch_size: int = 64, batch_size_val: int = 64, points: int = 2, load_ext_coef: bool = False
@@ -162,18 +154,3 @@ class SpatialField(Dataset):
             img = vflipper(img)
         return img, param
 
-
-if __name__ == "__main__":
-    exp = "normal"
-    type = "energy_theta"
-    model = "brown"
-    data_path = f"data/{exp}/data/"
-    train_loader, val_loader, train_dataset, val_dataset = get_train_val_loader(
-        data_path=data_path, model=model, type = type
-    )
-    for sample in val_loader:
-        img, param = sample
-        break
-    print(img.shape)
-    print(param.shape)
-    print(val_dataset.__len__())

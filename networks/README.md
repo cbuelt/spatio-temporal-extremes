@@ -4,6 +4,7 @@ This directory contains code used for parameter estimation using the neural netw
 
 | File | Description |
 | ---- | ----------- | 
-| `cnn.py` | This file includes the implementation of the normal CNN and the energy network. |
-| `train_model.py` | A script that is used to train the model. |
+| `config.py` | This file includes configurations for the model training. |
+| `models.py` | This file includes the implementation of the different neural network estimators. |
+| `train_model.py` | A script that is used to train the model and perform inference. |
 

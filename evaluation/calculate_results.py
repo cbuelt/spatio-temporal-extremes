@@ -156,18 +156,18 @@ if __name__ == "__main__":
 
     # Normal predictions
     exp = "normal"
-   # get_results_table(exp, models = ["brown", "powexp"])    
+    get_results_table(exp, models = ["brown", "powexp"])    
 
     # Outside parameters
     exp = "outside_parameters"
-   # get_results_table(exp, models = ["brown"])
+    get_results_table(exp, models = ["brown"])
 
     # Outside model - Whitmat
     exp = "outside_model"
-   # get_results_table(exp, models = ["whitmat"], model2 = "powexp")
+    get_results_table(exp, models = ["whitmat"], model2 = "powexp")
 
     # Outside model - Smith
-   # get_results_table(exp, models = ["brown"], transform = True)
+    get_results_table(exp, models = ["brown"], transform = True)
 
     # Aggregated data
     exp = "all_models_small"

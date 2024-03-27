@@ -5,15 +5,18 @@
 import numpy as np
 import torch
 from torch import optim
+import argparse
 import os
 import sys
-
 sys.path.append(os.getcwd())
 from utils.dataloader import get_train_val_loader, get_test_loader
 from networks.models import CNN, CNN_ES, CNN_ES_theta
 from utils.network import Scheduler
 from utils.utils import retransform_parameters, generate_support_points
 from utils.losses import EnergyScore
+
+# Import config
+from networks.config import config
 
 
 def train_model(
@@ -130,7 +133,6 @@ def predict_test_data(
     device,
     test_size: int,
     type: str = "normal",
-    batch_size_test: int = 500,
     sample_dim: int = 500,
     points: int = 0,
     load_ext_coef: bool = False,
@@ -154,7 +156,7 @@ def predict_test_data(
         data_path=path,
         model=model,
         type=type,
-        batch_size=batch_size_test,
+        batch_size=test_size,
         points=points,
         load_ext_coef=load_ext_coef,
     )
@@ -179,58 +181,69 @@ def predict_test_data(
     elif type == "energy_theta":
         test_results = np.zeros(shape=(test_size, points, sample_dim))
 
-    # Calculate test samples
+    # Calculate test samples in one batch
     for i, sample in enumerate(test_loader):
         img, param = sample
         img = img.to(device)
         param = param.to(device)
         net.eval()
         outputs = net(img)
-        if type == "normal":
-            outputs = retransform_parameters(outputs.detach().cpu().numpy())
-            test_results[(i * batch_size_test) : ((i + 1) * batch_size_test), :] = (
-                np.squeeze(outputs)
-            )
-        elif type == "energy":
-            outputs = retransform_parameters(outputs.detach().cpu().numpy())
-            test_results[(i * batch_size_test) : ((i + 1) * batch_size_test), :, :] = (
-                outputs
-            )
-        elif type == "energy_theta":
-            outputs = outputs.detach().cpu().numpy()
-            test_results[(i * batch_size_test) : ((i + 1) * batch_size_test), :, :] = (
-                np.squeeze(outputs)
-            )
+        break
+    if type == "normal":
+        outputs = retransform_parameters(outputs.detach().cpu().numpy())
+        test_results = (
+            np.squeeze(outputs)
+        )
+    elif type == "energy":
+        outputs = retransform_parameters(outputs.detach().cpu().numpy())
+        test_results = (
+            outputs
+        )
+    elif type == "energy_theta":
+        outputs = outputs.detach().cpu().numpy()
+        test_results = (
+            np.squeeze(outputs)
+        )
 
     np.save(file=f"data/{dir}/results/{model}_{net.name}.npy", arr=test_results)
     print(f"Saved results for model {model} and network {net.name}")
 
 
 if __name__ == "__main__":
-    # Set model
-    models = ["brown", "powexp"] # Define model to train 
-    dir = "normal" # Define which directory/data to use
-    types = ["normal", "energy", "energy_theta"] # Define types of neural networks to train and evaluate
-    epochs = 100 # Number of epochs
-    batch_size = 100 # Batch size
-    load_ext_coef = False # Whether to load extremal coefficient function or calculate it during training
-    train = True # Whether to train the model or evaluate only
+    # Parse arguments
+    parser = argparse.ArgumentParser(description="Process some information.")
+    parser.add_argument("--dir", type=str, help="Directory in the data folder.")
+    parser.add_argument("--train", type=bool, default = False, help="Whether to train the model or evaluate only.")
+    parser.add_argument("--load_ext_coef", type=bool, default = False, help="Whether to load extremal coefficient function or calculate it during training.")
+    parser.add_argument("--model", type=str, help="Model to train.", default = None)
+    args = parser.parse_args()
+
+    train = args.train
+    dir = args.dir
+    load_ext_coef = args.load_ext_coef
+    model = args.model
+
+    # For reproducing results choose model
+    if model is None:
+        models = config["models_per_dir"][dir]
+    else:
+        models = [model]
 
     # Calculate support points
-    h_support = generate_support_points()
+    h_support = generate_support_points(dh = config["dh"], max_length = config["max_length"])
     points = h_support.shape[0]
     # Set device
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     for model in models:
-        for type in types:
+        for type in config["network_types"]:
             # Train
             if train:
                 trained_net = train_model(
                     dir,
                     model,
-                    epochs,
-                    batch_size,
+                    config["epochs"],
+                    config["batch_size"],
                     device,
                     type=type,
                     points=points,
@@ -241,7 +254,7 @@ if __name__ == "__main__":
                 dir,
                 model,
                 device,
-                test_size=500,
+                test_size=config["test_size"],
                 type=type,
                 points=points,
                 load_ext_coef=load_ext_coef,

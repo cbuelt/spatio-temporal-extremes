@@ -1,7 +1,7 @@
 # Estimation of Extremes for Spatio-Temporal Processes with Neural Networks
 
 This repository contains the code accompanying the paper
-> Bülte, C., Leimenstoll, L. and Schienle, M. (2024). Estimation of spatio-temporal extremes via generative neural networks (preprint available at https://arxiv.org/tbd)
+> Bülte, C., Leimenstoll, L. and Schienle, M. (2024). Estimation of spatio-temporal extremes via generative neural networks (preprint available at https://arxiv.org/abs/2407.08668)
      
     
 The code includes methods for reproducing the results, as well as general implementation of our parameter and functional estimation approaches. For an overview of the code and the methodology, see below.

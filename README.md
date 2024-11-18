@@ -65,7 +65,9 @@ In the following are some of the important visualizations, for further details s
 
 
 ## Proposed neural network architecture
-The figure shows the proposed model architecture. The spatial field is fed through three blocks convolutional and max-pooling layers. Across the blocks, the output size decreases, while the channel size increases. In the second and third block, residual connections are added, marked by the arrows on top. After the convolutional layers the network is flattened and fed through some final linear layers, where Gaussian noise is multiplied on top to finally create $m$ output samples. For parameter prediction, samples of $\lambda, \nu$ are created, while for the direct estimation of the extremal coefficient function, sample points of the function are predicted as $\theta^i_j := \hat{\theta}_j(h_i)$.
+The figure shows the proposed model architecture. The spatial field is fed through three blocks convolutional and max-pooling layers. Across the blocks, the output size decreases, while the channel size increases. In the second and third block, residual connections are added, marked by the arrows on top. After the convolutional layers the network is flattened and fed through some final linear layers, where Gaussian noise is multiplied on top to finally create $m$ output samples. For parameter prediction, samples of $\lambda, \nu$ are created, while for the direct estimation of the extremal coefficient function, sample points of the function are predicted as
+
+$$\theta^i_j:=\hat{\theta}_j (h_i).$$
 
 ![](imgs/network_architecture.png)
 
